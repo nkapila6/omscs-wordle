@@ -1,4 +1,4 @@
-import { WordEntry } from '../game/types';
+import type { WordEntry } from '../game/types';
 
 export const WORDS: WordEntry[] = [
   { word: "CACHE", hint: "CS 6200 - Fast memory between CPU and RAM", category: "Operating Systems" },
