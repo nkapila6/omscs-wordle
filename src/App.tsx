@@ -16,8 +16,16 @@ export default function App() {
     }
   }, [game.status]);
 
-  const handleShare = async () => {
+  const handleShare = async (): Promise<'shared' | 'copied' | 'failed'> => {
     const text = game.shareText;
+    if (navigator.share) {
+      try {
+        await navigator.share({ text, title: 'OMSCS Wordle' });
+        return 'shared';
+      } catch (e) {
+        if (e instanceof DOMException && e.name === 'AbortError') return 'shared';
+      }
+    }
     try {
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(text);
@@ -32,8 +40,9 @@ export default function App() {
         document.execCommand('copy');
         document.body.removeChild(textarea);
       }
+      return 'copied';
     } catch (e) {
-      // last resort: do nothing, the modal still shows "copied"
+      return 'failed';
     }
   };
 

@@ -9,7 +9,7 @@ interface GameOverModalProps {
   guesses: string[];
   results: LetterState[][];
   hintsRevealed: number;
-  onShare: () => void;
+  onShare: () => Promise<'shared' | 'copied' | 'failed'>;
   onClose: () => void;
 }
 
@@ -23,7 +23,8 @@ export function GameOverModal({
   onShare,
   onClose,
 }: GameOverModalProps) {
-  const [copied, setCopied] = useState(false);
+  const [showShareMessage, setShowShareMessage] = useState(false);
+  const [shareMessage, setShareMessage] = useState('');
   const [timeLeft, setTimeLeft] = useState(getTimeUntilNextWord());
 
   useEffect(() => {
@@ -33,10 +34,17 @@ export function GameOverModal({
     return () => clearInterval(timer);
   }, []);
 
-  const handleShare = () => {
-    onShare();
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleShare = async () => {
+    const result = await onShare();
+    if (result === 'copied') {
+      setShareMessage('Copied to clipboard!');
+      setShowShareMessage(true);
+      setTimeout(() => setShowShareMessage(false), 2000);
+    } else if (result === 'failed') {
+      setShareMessage("Couldn't share - copy failed");
+      setShowShareMessage(true);
+      setTimeout(() => setShowShareMessage(false), 2000);
+    }
   };
 
   const pad = (n: number) => n.toString().padStart(2, '0');
@@ -116,9 +124,9 @@ export function GameOverModal({
         <div className="countdown">
           Next word in {pad(timeLeft.hours)}:{pad(timeLeft.minutes)}:{pad(timeLeft.seconds)}
         </div>
-        {copied && <div className="copied">Copied to clipboard!</div>}
+        {showShareMessage && <div className="copied">{shareMessage}</div>}
         <button className="share-button" onClick={handleShare}>Share</button>
-        <button className="share-button" onClick={generateShareImage} style={{ background: 'transparent', color: 'var(--gt-gold)', border: '1px solid var(--gt-gold)' }}>Share as Image</button>
+        <button className="share-button" onClick={generateShareImage} style={{ background: 'transparent', color: 'var(--accent)', border: '1px solid var(--accent)' }}>Share as Image</button>
         <button className="close-button" onClick={onClose}>Close</button>
       </div>
     </div>
