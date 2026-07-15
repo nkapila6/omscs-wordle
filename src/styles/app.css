@@ -105,7 +105,7 @@ body {
   gap: 6px;
   padding: 0 var(--space-md);
   flex: 1;
-  max-height: 360px;
+  min-height: 0;
 }
 
 .board-row {
