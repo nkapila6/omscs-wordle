@@ -1,32 +1,64 @@
-# React + TypeScript + Vite
+# OMSCS Wordle
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Wordle for Georgia Tech's OMSCS program. Guess the 5-letter CS/OMSCS word of the day.
 
-Currently, two official plugins are available:
+**Play it:** https://nkapila6.github.io/omscs-wordle/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## How it works
 
-## React Compiler
+- **Word of day:** Deterministic seed based on UTC+4 date. No backend, no API. Same word for everyone on the same day.
+- **Hard mode:** Only words in the curated list are valid guesses. Every guess is a CS/OMSCS word.
+- **Hints:** 3 progressive tiers (letter reveal, repeated-letter info, full course reference). Tracked as "X/3 hints revealed" in share text.
+- **Colors:** Georgia Tech themed. Old Gold for correct, Navy Blue for present.
+- **Stats:** None. No accounts, no backend. Game state persists in localStorage per day.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Word list
 
-## Expanding the Oxlint configuration
+703 curated 5-letter words across 25+ categories, each with a course-specific hint:
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+- Operating Systems (CS 6200/6210)
+- Computer Networks (CS 6250)
+- Machine Learning (CS 7641)
+- Deep Learning (CS 7643)
+- NLP (CS 7650)
+- Computer Vision (CS 6476)
+- Algorithms (CS 6515)
+- Security (CS 6035/6262)
+- Databases (CS 6400)
+- OMSCS Lore (Danny the llama, Klaus, Slack, etc.)
+- ...and more
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+The list lives in `src/data/words.ts`. Add words there to extend the cycle.
+
+## Tech
+
+- Vite + React + TypeScript
+- Plain CSS (dark mode only, GT themed)
+- No dependencies beyond React
+- Impeccable design principles applied
+- Deployed via GitHub Pages (auto on push to master)
+
+## Run locally
+
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Open http://localhost:5173
+
+## Project structure
+
+```
+src/
+  data/words.ts        # curated wordlist (703 words)
+  game/engine.ts       # word-of-day, guess eval, hints, share text
+  game/types.ts        # shared types
+  hooks/useGame.ts     # game state hook (localStorage persistence)
+  components/          # Board, Keyboard, Header, HintPanel, GameOverModal
+  styles/app.css       # all styling
+```
+
+## Deploy
+
+Pushes to `master` auto-deploy to GitHub Pages via `.github/workflows/deploy.yml`.
