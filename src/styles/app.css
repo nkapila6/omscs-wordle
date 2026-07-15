@@ -1,37 +1,30 @@
 :root {
-  /* GT Old Gold - correct letters */
-  --gt-gold: #B3A369;
-  --gt-gold-light: #C9B87A;
-  --gt-gold-dark: #9A8A55;
+  /* Wordle (default) theme */
+  --tile-correct: #6aaa64;
+  --tile-present: #c9b458;
+  --tile-absent: #3a3a3c;
+  --tile-empty: #121213;
+  --tile-filled: #3a3a3c;
 
-  /* GT Navy Blue - present letters, brand */
-  --gt-navy: #003057;
-  --gt-navy-light: #1A4A6E;
-  --gt-navy-dark: #00203D;
+  --bg: #121213;
+  --bg-surface: #1f1f20;
+  --bg-elevated: #2a2a2b;
 
-  /* Absent letters */
-  --absent: #3A3A3E;
+  --text-primary: #ffffff;
+  --text-secondary: #838383;
+  --text-muted: #565758;
 
-  /* Background - deep navy */
-  --bg: #0A1628;
-  --bg-surface: #122236;
-  --bg-elevated: #1A3045;
+  --border: #3a3a3c;
+  --border-strong: #565658;
 
-  /* Text */
-  --text-primary: #E8E8E8;
-  --text-secondary: #A0A8B0;
-  --text-muted: #6B7280;
+  --accent: #6aaa64;
+  --accent-light: #7ab072;
+  --accent-dark: #5a9a54;
 
-  /* Borders */
-  --border: #2A3F5A;
-  --border-strong: #3A5570;
+  --correct-fg: #ffffff;
+  --present-fg: #ffffff;
 
-  /* Tile states */
-  --tile-empty: #1E3A52;
-  --tile-filled: #2A4A6A;
-  --tile-correct: #B3A369;
-  --tile-present: #003057;
-  --tile-absent: #3A3A3E;
+  --key-hover: #3a3a3c;
 
   /* Spacing scale (4pt base) */
   --space-xs: 4px;
@@ -43,6 +36,34 @@
   /* Easing curves */
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="omscs"] {
+  --tile-correct: #B3A369;
+  --tile-present: #003057;
+  --tile-absent: #3A3A3E;
+  --tile-empty: #1E3A52;
+  --tile-filled: #2A4A6A;
+
+  --bg: #0A1628;
+  --bg-surface: #122236;
+  --bg-elevated: #1A3045;
+
+  --text-primary: #E8E8E8;
+  --text-secondary: #A0A8B0;
+  --text-muted: #6B7280;
+
+  --border: #2A3F5A;
+  --border-strong: #3A5570;
+
+  --accent: #B3A369;
+  --accent-light: #C9B87A;
+  --accent-dark: #9A8A55;
+
+  --correct-fg: #00203D;
+  --present-fg: #ffffff;
+
+  --key-hover: #1A4A6E;
 }
 
 * {
@@ -75,11 +96,57 @@ body {
   margin-bottom: var(--space-md);
 }
 
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
 .header h1 {
   font-size: 1.75rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--gt-gold);
+  color: var(--accent);
+}
+
+/* Theme toggle */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  border-color: var(--border-strong);
+}
+
+.theme-toggle__label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 2px 6px;
+  border-radius: 12px;
+  color: var(--text-secondary);
+  transition: color 0.15s, background 0.15s;
+}
+
+.theme-toggle--active .theme-toggle__label:last-child {
+  color: var(--text-primary);
+  background: var(--accent);
+}
+
+.theme-toggle:not(.theme-toggle--active) .theme-toggle__label:first-child {
+  color: var(--text-primary);
+  background: var(--accent);
 }
 
 .header .day-number {
@@ -135,20 +202,20 @@ body {
 }
 
 .tile.correct {
-  background: var(--gt-gold);
-  border-color: var(--gt-gold);
-  color: var(--gt-navy-dark);
+  background: var(--tile-correct);
+  border-color: var(--tile-correct);
+  color: var(--correct-fg);
 }
 
 .tile.present {
-  background: var(--gt-navy);
-  border-color: var(--gt-navy);
-  color: #ffffff;
+  background: var(--tile-present);
+  border-color: var(--tile-present);
+  color: var(--present-fg);
 }
 
 .tile.absent {
-  background: var(--absent);
-  border-color: var(--absent);
+  background: var(--tile-absent);
+  border-color: var(--tile-absent);
   color: var(--text-muted);
 }
 
@@ -193,7 +260,7 @@ body {
 }
 
 .key:hover {
-  background: var(--gt-navy-light);
+  background: var(--key-hover);
 }
 
 .key:active {
@@ -201,18 +268,18 @@ body {
 }
 
 .key.absent {
-  background: var(--absent);
+  background: var(--tile-absent);
   color: var(--text-muted);
 }
 
 .key.present {
-  background: var(--gt-navy);
-  color: #ffffff;
+  background: var(--tile-present);
+  color: var(--present-fg);
 }
 
 .key.correct {
-  background: var(--gt-gold);
-  color: var(--gt-navy-dark);
+  background: var(--tile-correct);
+  color: var(--correct-fg);
 }
 
 .key.wide {
@@ -264,7 +331,7 @@ body {
   padding: var(--space-sm) var(--space-md);
   background: var(--bg-surface);
   border-radius: 6px;
-  border-left: 3px solid var(--gt-gold);
+  border-left: 3px solid var(--accent);
 }
 
 .hint-item .hint-label {
@@ -272,7 +339,7 @@ body {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--gt-gold);
+  color: var(--accent);
   margin-bottom: var(--space-xs);
 }
 
@@ -287,8 +354,8 @@ body {
   top: var(--space-lg);
   left: 50%;
   transform: translateX(-50%);
-  background: var(--gt-navy);
-  color: #ffffff;
+  background: var(--tile-present);
+  color: var(--present-fg);
   padding: var(--space-sm) var(--space-lg);
   border-radius: 8px;
   font-size: 0.875rem;
@@ -340,7 +407,7 @@ body {
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: var(--space-sm);
-  color: var(--gt-gold);
+  color: var(--accent);
 }
 
 .modal .answer {
@@ -367,8 +434,8 @@ body {
 .share-button {
   width: 100%;
   padding: var(--space-sm) var(--space-lg);
-  background: var(--gt-gold);
-  color: var(--gt-navy-dark);
+  background: var(--accent);
+  color: var(--correct-fg);
   border: none;
   border-radius: 8px;
   font-size: 1rem;
@@ -379,7 +446,7 @@ body {
 }
 
 .share-button:hover {
-  background: var(--gt-gold-light);
+  background: var(--accent-light);
 }
 
 .share-button:active {
@@ -388,8 +455,7 @@ body {
 
 .copied {
   font-size: 0.875rem;
-  color: var(--gt-gold);
-  margin-bottom: var(--space-sm);
+  color: var(--accent);
 }
 
 .close-button {
@@ -412,7 +478,7 @@ body {
 /* === Focus === */
 button:focus-visible,
 .key:focus-visible {
-  outline: 2px solid var(--gt-gold);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
