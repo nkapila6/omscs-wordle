@@ -111,6 +111,8 @@ export function generateShareText(
     lines.push(emojiRow);
   }
 
+  lines.push('', 'Join the OMSCS Wordle @ https://nkapila6.github.io/omscs-wordle/');
+
   return lines.join('\n');
 }
 
