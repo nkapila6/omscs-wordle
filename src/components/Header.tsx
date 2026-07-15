@@ -34,15 +34,18 @@ export function Header({ category, dayIndex }: HeaderProps) {
     <header className="header">
       <div className="header-top">
         <h1>OMSCS Wordle</h1>
-        <button
-          className={`theme-toggle ${theme === "omscs" ? "theme-toggle--active" : ""}`}
-          onClick={toggleTheme}
-          title={`Switch to ${theme === "wordle" ? "OMSCS" : "Wordle"} theme`}
-        >
-          <span className="theme-toggle__label">Wordle</span>
-          <span className="theme-toggle__slider" />
-          <span className="theme-toggle__label">OMSCS</span>
-        </button>
+        <div className="theme-toggle-wrap">
+          <span className="theme-toggle-wrap__label">Theme</span>
+          <button
+            className={`theme-toggle ${theme === "omscs" ? "theme-toggle--active" : ""}`}
+            onClick={toggleTheme}
+            title={`Switch to ${theme === "wordle" ? "OMSCS" : "Wordle"} theme`}
+          >
+            <span className="theme-toggle__label">Wordle</span>
+            <span className="theme-toggle__slider" />
+            <span className="theme-toggle__label">OMSCS</span>
+          </button>
+        </div>
       </div>
       <div className="day-number">#{dayIndex}</div>
       <div className="category">{category}</div>
